@@ -15,7 +15,7 @@
 <br>
 
 ## 项目缘由
-本项目为轻量自回归模型 lite-transformer-[Lite Transformer with Long-Short Range Attention paper](https://arxiv.org/abs/2004.11886), [Lite Transformer code](https://github.com/mit-han-lab/lite-transformer)落地探索提出 ，利用TensorRT对模型的推理过程进行加速，目标是服务端也能运行lite-transformer。<br>
+本项目为轻量自回归模型 lite-transformer-[Lite Transformer with Long-Short Range Attention paper](https://arxiv.org/abs/2004.11886), [Lite Transformer code](https://github.com/mit-han-lab/lite-transformer)落地探索提出 ，利用TensorRT对模型的推理过程进行加速，目标是服务端高性能地运行lite-transformer模型。<br>
   为什么要为lite-transformer搞服务端优化:
 - __轻量__  模型是对标准transformer模型的结构精简，在保持模型参数量大幅减少的情况下效果依旧保持的比较好，更适合落地业务应用；
 - __推广应用价值__  lite-transformer相关类(Cov+self-attn 组合结构，能够有效捕获长短信息依赖) 的研究在学术界比较广泛，但有关模型的落地开源项目较少，因此考虑提出这样一个项目抛砖引玉让更多此类模型在TRT上跑起来；
