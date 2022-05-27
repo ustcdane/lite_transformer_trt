@@ -17,8 +17,8 @@
 ## 项目缘由
 本项目为轻量自回归模型 lite-transformer-[Lite Transformer with Long-Short Range Attention paper](https://arxiv.org/abs/2004.11886), [Lite Transformer code](https://github.com/mit-han-lab/lite-transformer)落地探索提出 ，利用TensorRT对模型的推理过程进行加速，目标是服务端高性能地运行lite-transformer模型。<br>
   为什么要为lite-transformer搞服务端优化:
-- __轻量__  模型是对标准transformer模型的结构精简，在保持模型参数量大幅减少的情况下效果依旧保持的比较好，更适合落地业务应用；
-- __推广应用价值__  lite-transformer相关类(Cov+self-attn 组合结构，能够有效捕获长短信息依赖) 的研究在学术界比较广泛，但相关模型的落地开源项目较少，因此考虑提出这样一个项目抛砖引玉让更多此类模型在TRT上跑起来；
+- __轻量__  lite-transformer模型是对标准transformer模型的结构精简，在保持模型参数量减少的情况下效果依旧保持的比较好，更适合落地业务应用；
+- __推广应用价值__  lite-transformer相关类(Cov+self-attn 的组合结构，能够有效捕获长短信息依赖) 的研究在学术界比较广泛，但相关模型的落地开源项目较少，因此考虑提出这样一个项目抛砖引玉，让更多此类模型可以参考地在TRT上跑起来；
 - __其它__ ^_^
 
 <br>
@@ -73,7 +73,7 @@ pip install torch==1.8.0+cu111 torchvision==0.9.0+cu111 torchaudio==0.8.0 -f htt
 
 * 配置环境
 ```bash
-    cd lite-nat
+    cd lite_transformer_trt
     pip install --editable .
  ```
 
@@ -103,6 +103,4 @@ cd apex && pip install -v --no-cache-dir --global-option="--cpp_ext" --global-op
 
 ## 快速上手
 
-### 数据预处理
-#### 预处理训练数据
  继续完善...
