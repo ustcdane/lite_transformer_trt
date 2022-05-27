@@ -25,7 +25,7 @@
 
 ## 项目特色
 由于lite-transformer_trt定位是:
-- __易用__  依赖当前NLP知名开源库[fairseq](https://github.com/pytorch/fairseq/) ，易安装使用，还可以进行快速二次模型开发。 此外，依赖大名鼎鼎的[TensorRT](https://github.com/NVIDIA/TensorRT/）进行性能落地优化；
+- __易用__  依赖当前NLP知名开源库[fairseq](https://github.com/pytorch/fairseq/) ，易安装使用，还可以进行快速二次模型开发。 此外，依赖大名鼎鼎的[TensorRT](https://github.com/NVIDIA/TensorRT/)进行性能落地优化；
 - __可扩展__  可以参考本项目，扩展应用于NLP序列处理任务，另外可以根据本项目plugins模仿写自己的plugins ，另外根据本项目实现基于trt的推理参考；
 
 <br>
