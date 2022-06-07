@@ -75,6 +75,12 @@ pip install torch==1.8.0+cu111 torchvision==0.9.0+cu111 torchaudio==0.8.0 -f htt
 ```bash
     cd lite_transformer_trt
     pip install --editable .
+    
+   如果想用最新版本fairseq 请自行下载最新版本fairseq 进行安装:
+   git clone https://github.com/pytorch/fairseq
+   cd fairseq
+   pip install --editable ./
+    
  ```
 
 配置卷积 `lightconv` and `dynamicconv` GPU支持 
