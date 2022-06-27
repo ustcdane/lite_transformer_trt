@@ -1,0 +1,60 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }, 
+        {
+            "name": "onnx_export",
+            "type": "python",
+            "request": "launch",
+            "program": "/root/workspace/lite_transformer_trt/fairseq_cli/onnx_generate.py",
+            "args": [
+                "/root/workspace/lite_transformer_trt/test/wmt16test",
+                "--path", "/root/workspace/lite_transformer_trt/myLiteTransExp/checkpoint_best.pt",
+                "--user-dir", "/root/workspace/lite_transformer_trt/my_lite_plugins",
+                "--beam", "1", 
+                "--batch-size", "128",
+                "--remove-bpe",  "--lenpen", "0.6",
+                "--gen-subset", "test"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            //"purpose": ["debug-in-terminal"],
+            "env": {
+                    "CUDA_VISIBLE_DEVICES": "0",
+            }
+        },
+
+        {
+            "name": "conv_onnx_export",
+            "type": "python",
+            "request": "launch",
+            "program": "/root/workspace/lite_transformer_trt/fairseq_cli/conv_onnx_generate.py",
+            "args": [
+                "/root/workspace/lite_transformer_trt/test/wmt16test",
+                "--path", "/root/workspace/lite_transformer_trt/myLiteConvTransExp/checkpoint_last.pt",
+                "--user-dir", "/root/workspace/lite_transformer_trt/my_lite_plugins",
+                "--task", "translation_lev", "--max-sentences", "64", 
+                "--iter-decode-max-iter", "0", 
+                "--iter-decode-eos-penalty", "0",
+                "--iter-decode-with-beam", "1",
+                "--gen-subset", "test"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            //"purpose": ["debug-in-terminal"],
+            "env": {
+                    "CUDA_VISIBLE_DEVICES": "0",
+            }
+        }
+    ]
+}
