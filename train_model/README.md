@@ -114,6 +114,7 @@ cd apex && pip install -v --no-cache-dir --global-option="--cpp_ext" --global-op
 
 bash configs/wmt16.en-de/prepare.sh
 把生成的数据拷贝到 lite_transformer_trt/train_model, 数据目录格式如下:
+```shell
 data/binary/
 └── wmt16_en_de_bpe32k
     ├── dict.de.txt
@@ -130,7 +131,7 @@ data/binary/
     ├── valid.en-de.de.idx
     ├── valid.en-de.en.bin
     └── valid.en-de.en.idx
-
+```
 
 ### 模型训练
 

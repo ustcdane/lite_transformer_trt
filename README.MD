@@ -71,7 +71,9 @@ transformer 模型刚提出时在NLP界大放异彩，其效果显著当前在CV
   由于lite-transformer是基于老版本fairseq开发，其代码融入到fairseq代码，整体代码缺乏一定可读性[如其主题代码 multibranch 在 fairseq/models/](https://github.com/mit-han-lab/lite-transformer/blob/master/fairseq/models/transformer_multibranch_v2.py)，此外lite-transformer原始模型[不能导出onnx模型](https://github.com/mit-han-lab/lite-transformer/issues/24)，结合以上原因我们对模型进行以下两点改造工作：<br>
   -  采用fairseq自定义plugin方式复现lite-transformer,见代码 train_model/my_lite_plugins
   -  实现了lite-transformer dynamicconv+self-attn的非回归版本(none-auoregress ) my_lite_plugins/models/liteConv_NAT.py
+</br>
 
+- 模型训练代码: https://github.com/ustcdane/lite_transformer_trt/tree/main/train_model
 
 ## 优化过程
 
@@ -87,7 +89,7 @@ transformer 模型刚提出时在NLP界大放异彩，其效果显著当前在CV
 性能提升计算公式：（BASE-X）/BASE × 100%
 
 | 批次         | BS=16 seq=32      | BS=16 seq=8 |  
-|---------------|:-------|:-------|:-------|
+|---------------|:-------|:-------|
 | pytorch           | 88.35 |21.31|
 | TRT（TF32）     | 16.71 | 7.11 |
 | TRT（TF32）性能提升 | 81.09% | 66.64% |
