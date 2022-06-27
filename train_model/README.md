@@ -1,4 +1,4 @@
-# lite_transformer_trt
+# lite transformer train code
 <br>
 
 目录
@@ -164,4 +164,35 @@ https://github.com/facebookresearch/fairseq/tree/main/examples/quant_noise
 训练命令
 ```commandline
 nohub sh QATCovCrfLiteNatStart.sh.sh  2>&1 >> log.qat_op_cov &
+```
+## TRT推理
+详见：
+https://github.com/ustcdane/lite_transformer_trt/tree/main/trt_code
+
+## 代码目录说明
+
+```shell
+train_model
+├── build
+├── configs
+├── covCrfLiteNatStart.sh # 训练脚本
+├── data
+├── fairseq
+├── fairseq_cli
+├── fairseq.egg-info
+├── gccenv.sh
+├── generate.py
+├── Lstop.sh
+├── make_onnx.sh
+├── myLiteConvOPExp 
+├── my_lite_onnx_plugins #用户自定义插件
+├── my_lite_plugins #用户自定义插件
+├── preprocess.py
+├── QATCovCrfLiteNatStart.sh # QAT训练脚本
+├── README.md
+├── setup.py
+├── startTrain.sh # lite-transformer 自回归训练脚本
+├── stop.sh
+├── test 测试& onnx 生成脚本目录
+└── train.py
 ```
