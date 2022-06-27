@@ -45,16 +45,21 @@ nvidia-docker run -it --name trt2022  -p 8231:22  -v /root/workspace/lite_transf
 
 执行``pip install gdown``
 
-执行``download.sh``
+进入项目目录：
+```commandline
+ cd lite_transformer_trt
+ ```
 
-请确保以上是在trt2022在容器内执行。
+执行``download.sh`` 注意这块下载由于网络原因可能不好使,需要手动下载然后拷贝到data_model目录。
+
+请确保以上是在trt2022容器内执行。
 
 #### TRT性能测试
 
-确保前面步骤成功且在trt2022容器内
+确保前面启动环境步骤成功且在trt2022容器内执行，运行如下命令测试模型效果及计算性能：
 
 ```commandline
-cd /workspace
+cd trt_code
 bash build.sh
 ```
 
@@ -102,10 +107,12 @@ transformer 模型提出时在NLP界大放异彩，其效果显著，当前在CV
 | TRT（FP16相对FP32）性能提升 | 59.01% | 48.24% |
 | TRT（FP16相对baseline）性能提升 | 92.25% | 82.73% |
 
-修正FP16精度溢出问题：
+- 修正FP16精度溢出问题：
 
-  FP16精度问题往往由于`pow sqt`之类的算子，而这块主要集中在layernorm，通过编写插件`LayerNorm`确保精度溢出，另外layernorm Add算子加的超参是1e-5, 这块实现时也要注意下。
+  FP16精度问题一般由于`pow sqt div`之类的算子，而这块主要集中在layernorm，通过编写插件`LayerNorm`确保精度溢出，另外layernorm Add算子加的超参是1e-5, 这块实现时也要注意下。
 
+- int8 转trt engine问题：
+   当前采QAT训练模型，但转onnx后再转trt engine出现问题，还在思考解决中。
 
 ## 精度与加速效果
 
@@ -154,4 +161,4 @@ r0: median of relative difference of output 0
 
 ## 经验与体会
 - 当前对于某些训练模型框架转onnx是使用TRT转起来的一大门槛，这块需要相关大厂多多支持模型转onnx解决方案,或者大家积极参与各种训练框架模型转onnx的问题解决方法分享
-- TRT 相关技术文档不够详细感觉，比如只给出API说明，其实有的具体用法还不够明白，读者可能比较迷糊，后面可以给出更多例子让大家参考来写code，这样会更快入门
+- TRT 技术为AI推理提供广阔的施展空间，但trt相关技术文档感觉不够详细^_^，比如有些难懂的技术只给出API说明，其实有的具体用法还不够明白，读者可能比较迷糊，后面可以给出更多例子让大家参考来写code，这样会更快入门
