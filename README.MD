@@ -4,7 +4,7 @@
 - 原始模型名称及链接： https://github.com/mit-han-lab/lite-transformer
 - 本项目使用模型： https://drive.google.com/drive/folders/1xDC8zLuH-a6Ws0l9ERsmX5UB1Ko2xkmf
 - 本项目使用训练、测试数据集： https://statmt.org/wmt16/translation-task.html#Download
-- 优化效果（精度和加速比。干货多：自定义pytorch算子、自定义算子ONNX导出方式、自定义算子plugin实现、FP16优化 
+- 优化效果（精度和加速比,有干货：自定义pytorch算子、自定义算子ONNX导出方式、自定义算子plugin实现、FP16优化、int8QAT训练优化 
 
 ## 如何运行
 
@@ -61,7 +61,7 @@ bash build.sh
 ## 原始模型
 ### 模型简介
 
-transformer 模型刚提出时在NLP界大放异彩，其效果显著当前在CV界也作为基本框架被学术、工业界二次开发、落地应用。 本项目为轻量自回归模型 lite-transformer-[Lite Transformer with Long-Short Range Attention paper](https://arxiv.org/abs/2004.11886), [Lite Transformer code](https://github.com/mit-han-lab/lite-transformer)落地探索提出 ，利用TensorRT对模型的推理过程进行加速，目标是服务端高性能地运行lite-transformer模型。<br>
+transformer 模型提出时在NLP界大放异彩，其效果显著，当前在CV界也作为基本框架被学术、工业界二次开发、落地应用。 本项目为轻量自回归模型 lite-transformer-[Lite Transformer with Long-Short Range Attention paper](https://arxiv.org/abs/2004.11886), [Lite Transformer code](https://github.com/mit-han-lab/lite-transformer)落地探索提出 ，利用TensorRT对变种transformer模型的推理过程进行加速，目标是服务端高性能地运行lite-transformer模型。<br>
 
   为什么要为lite-transformer搞服务端优化:
 - __轻量__  lite-transformer模型是对标准transformer模型的结构精简，在保持模型参数量减少的情况下效果依旧保持的比较好，更适合落地业务应用；
@@ -71,24 +71,25 @@ transformer 模型刚提出时在NLP界大放异彩，其效果显著当前在CV
 
 ## 原始网络结构改造
 
-  由于lite-transformer是基于老版本fairseq开发，其代码融入到fairseq代码，整体代码缺乏一定可读性[如其主题代码 multibranch 在 fairseq/models/](https://github.com/mit-han-lab/lite-transformer/blob/master/fairseq/models/transformer_multibranch_v2.py)，此外lite-transformer原始模型[不能导出onnx模型](https://github.com/mit-han-lab/lite-transformer/issues/24)，结合以上原因我们对模型进行以下两点改造工作：<br>
+  由于lite-transformer是基于老版本fairseq开发，其代码融入到fairseq代码，整体代码缺乏一定可读性[如其主体代码 multibranch 在 fairseq/models/](https://github.com/mit-han-lab/lite-transformer/blob/master/fairseq/models/transformer_multibranch_v2.py)，此外lite-transformer原始模型[不能导出onnx模型](https://github.com/mit-han-lab/lite-transformer/issues/24)，结合以上原因我们对模型进行以下两点改造工作：<br>
   -  采用fairseq自定义plugin方式复现lite-transformer,见代码 train_model/my_lite_plugins
   -  实现了lite-transformer dynamicconv+self-attn的非回归版本(none-auoregress ) my_lite_plugins/models/liteConv_NAT.py
 </br>
 
-- 模型训练代码: https://github.com/ustcdane/lite_transformer_trt/tree/main/train_model
+- 模型训练代码: [train code](https://github.com/ustcdane/lite_transformer_trt/tree/main/train_model)
 
 ## 优化过程
 
-- 模型优化开发：实现了lite-transformer dynamicconv+self-attn的非回归版本(none-auoregress ),详细见说明文档 train_model/README.md
+- 模型优化开发：实现了lite-transformer dynamicconv+self-attn的非回归版本(none-auoregress ),详细见说明文档 [train_model/README.md](https://github.com/ustcdane/lite_transformer_trt/tree/main/train_model)
 - 进行onnx模型转换：由于ONNX 没有算子DynamicConv，因此需要实现onnx 自定义算子 以便模型导出为onnx 具体解决方法见：doc/README.md
-- DynamicConv复杂算子plugin实现：包括实现结果精度验证，详细见DynamicConvPlugin
-- 算子融合提升性能：对LayerNorm算子融合，进一步提升性能，详细见LayerNormPlugin
-- onnxruntime自定义复杂算子还存在bug这里采用pytorch作为baseline
-- 采用 FP32和FP16进行模型转换
+- DynamicConv复杂算子plugin实现：包括实现结果精度验证，详细见[DynamicConvPlugin](https://github.com/ustcdane/lite_transformer_trt/tree/main/trt_code/DynamicConvPlugin)
+- 算子融合提升性能：对LayerNorm算子融合，进一步提升性能，详细见[LayerNormPlugin](https://github.com/ustcdane/lite_transformer_trt/tree/main/trt_code/LayerNormPlugin)
+- onnxruntime自定义复杂算子还存在bug这里采用pytorch作为baseline, 延迟[测试地址](https://github.com/ustcdane/lite_transformer_trt/blob/main/train_model/test/conv_onnx_and_latent_time.sh)
+- 计算图修改：对计算图不能转trt engine节点进行修改，[代码](https://github.com/ustcdane/lite_transformer_trt/blob/main/trt_code/onnx_surgeon.py), onnx部分节点导出问题[汇总](https://github.com/ustcdane/lite_transformer_trt/blob/main/doc/onnx_op.MD#%E5%AF%BC%E5%87%BAonnx%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98)
+- 采用 FP32和FP16进行模型转换,当前int8转换存在问题，[engine转换代码](https://github.com/ustcdane/lite_transformer_trt/blob/main/trt_code/build_engine.py) 
 - FP32 精度可接受，性能提升 81%(baseline)，详情见下表
 - FP16 精度可接受，性能提升 48%(FP32)， 详情见下表
-- in8 QAT，目前开发完模型训练，但是转onnx出现问题，[代码](https://github.com/ustcdane/lite_transformer_trt/tree/main/train_model#qat%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83)
+- in8 QAT，目前开发完模型训练，但是onnx转int8 engine出现问题，[QAT地址](https://github.com/ustcdane/lite_transformer_trt/tree/main/train_model#qat%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83)
 
 性能提升计算公式：（BASE-X）/BASE × 100%
 
@@ -147,11 +148,10 @@ r0: median of relative difference of output 0
 
 ```
 
-- 问题：目前由于onnx某些节点问题，目前自动评测性时只给了BS=16 seq=32情形，实际情况需要转换onnx时 指定seqlen为 8\16等情形。
+- 问题：目前由于onnx某些节点问题，目前自动评测性时只给了BS=16 seq=32情形，实际情况其它seq len需要转换onnx时指定seqlen为 8\16等情形（目前看着应该是计算图问题，还未来得及修改）。
 - onnx 自定义算子，实现onnxruntime 相关参考不多，遇到问题还不知道如何解决 本项目实现初步的 ort_test.py 还未完全跑通
 
 
-
 ## 经验与体会
-- 当前对于非成熟框架或模型 转onnx是使用TRT的一大门槛，这块需要相关大厂多多支持模型转onnx解决方案
-- TRT 相关技术文档不够全，尤其中文相关文档，后面可以给出更多例子让大家参考来写，会更快入门
+- 当前对于某些训练模型框架转onnx是使用TRT转起来的一大门槛，这块需要相关大厂多多支持模型转onnx解决方案,或者大家积极参与各种训练框架模型转onnx的问题解决方法分享
+- TRT 相关技术文档不够详细感觉，比如只给出API说明，其实有的具体用法还不够明白，读者可能比较迷糊，后面可以给出更多例子让大家参考来写code，这样会更快入门
