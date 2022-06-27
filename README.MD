@@ -9,9 +9,12 @@
 ## 如何运行
 
 ### 模型训练
-  由于对原始模型进行了一些修改，如果想自己训练模型参见说明：
+ 如果想跳过模型训练直接转到[trt环境配置及运行](https://github.com/ustcdane/lite_transformer_trt#%E5%AE%89%E8%A3%85nvidia-docker)
 
-  
+- 模型训练
+
+由于对原始模型进行了一些修改，如果想自己训练模型参见说明：https://github.com/ustcdane/lite_transformer_trt/tree/main/train_model
+
   本项目可用模型地址：https://drive.google.com/drive/folders/1xDC8zLuH-a6Ws0l9ERsmX5UB1Ko2xkmf
 
 ### 模型导出ONNX
@@ -85,6 +88,7 @@ transformer 模型刚提出时在NLP界大放异彩，其效果显著当前在CV
 - 采用 FP32和FP16进行模型转换
 - FP32 精度可接受，性能提升 81%(baseline)，详情见下表
 - FP16 精度可接受，性能提升 48%(FP32)， 详情见下表
+- in8 QAT，目前开发完模型训练，但是转onnx出现问题，[代码](https://github.com/ustcdane/lite_transformer_trt/tree/main/train_model#qat%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83)
 
 性能提升计算公式：（BASE-X）/BASE × 100%
 
