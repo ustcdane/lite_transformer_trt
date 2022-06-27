@@ -108,7 +108,7 @@ __global__ void layerNormKernelFast32(float* i_A, float* o_C, int vec_len, int b
 	if (tx == 0)
 	{
 		//var = sum_aa / float(vec_len);
-		s_variance = rsqrtf(sum_aa / float(vec_len) + 0.000009999999747378752);
+		s_variance = rsqrtf(sum_aa / float(vec_len) + 1e-5);
 	}
 	__syncthreads();
 
@@ -167,7 +167,7 @@ __global__ void layerNormKernelFast16(half* i_A, half* o_C, int vec_len, int bs,
 	if (tx == 0)
 	{
 		//var = sum_aa / float(vec_len);
-		s_variance = rsqrtf(sum_aa / float(vec_len) + 0.000009999999747378752);
+		s_variance = rsqrtf(sum_aa / float(vec_len) + 1e-5);
 	}
 	__syncthreads();
 

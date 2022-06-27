@@ -92,13 +92,13 @@ transformer 模型提出时在NLP界大放异彩，其效果显著，当前在CV
 - onnxruntime自定义复杂算子还存在bug这里采用pytorch作为baseline, 延迟[测试地址](https://github.com/ustcdane/lite_transformer_trt/blob/main/train_model/test/conv_onnx_and_latent_time.sh)
 - 计算图修改：对计算图不能转trt engine节点进行修改，[代码](https://github.com/ustcdane/lite_transformer_trt/blob/main/trt_code/onnx_surgeon.py), onnx部分节点导出问题[汇总](https://github.com/ustcdane/lite_transformer_trt/blob/main/doc/onnx_op.MD#%E5%AF%BC%E5%87%BAonnx%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98)
 - 采用 FP32和FP16进行模型转换,当前int8转换存在问题，[engine转换代码](https://github.com/ustcdane/lite_transformer_trt/blob/main/trt_code/build_engine.py) 
-- FP32 精度可接受，性能提升 81%(baseline)，详情见下表
-- FP16 精度可接受，性能提升 48%(FP32)， 详情见下表
+- FP32 精度可接受，性能提升 81%(baseline seqlen=32)，详情见下表
+- FP16 精度可接受，性能提升 59%(FP32 seqlen=32)， 详情见下表
 - in8 QAT，目前开发完模型训练，但是onnx转int8 engine出现问题，[QAT地址](https://github.com/ustcdane/lite_transformer_trt/tree/main/train_model#qat%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83)
 
 性能提升计算公式：（BASE-X）/BASE × 100%
 
-| 批次         | BS=16 seq=32      | BS=16 seq=8 |  
+| 批次         | BS=16 seqlen=32      | BS=16 seqlen=8 |  
 |---------------|:-------|:-------|
 | pytorch           | 88.35 |21.31|
 | TRT（TF32）     | 16.71 | 7.11 |
