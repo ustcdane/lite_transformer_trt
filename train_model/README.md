@@ -159,7 +159,7 @@ lite_cov_test.sh
 https://github.com/facebookresearch/fairseq/tree/main/examples/quant_noise
 
 由于fairseq 自带int8 emb不支持 LearnedPositionalEmbedding, 因此实现支持位置的int8 emb训练
-具体代码：train_model/fairseq/modules/quantization/scalar/modules/qposemb.py
+具体代码：[train_model/fairseq/modules/quantization/scalar/modules/qposemb.py](https://github.com/ustcdane/lite_transformer_trt/blob/main/train_model/fairseq/modules/quantization/scalar/modules/qposemb.py)
 
 训练命令
 ```commandline
