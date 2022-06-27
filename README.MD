@@ -2,7 +2,7 @@
 ## 总述
 该项目为lite-transformer模型的TensorRT推理版本实现
 - 原始模型名称及链接： https://github.com/mit-han-lab/lite-transformer
-- 本项目使用模型： 
+- 本项目使用模型： https://drive.google.com/drive/folders/1xDC8zLuH-a6Ws0l9ERsmX5UB1Ko2xkmf
 - 本项目使用训练、测试数据集： https://statmt.org/wmt16/translation-task.html#Download
 - 优化效果（精度和加速比。干货多：自定义pytorch算子、自定义算子ONNX导出方式、自定义算子plugin实现、FP16优化 
 
@@ -12,7 +12,7 @@
   由于对原始模型进行了一些修改，如果想自己训练模型参见说明：
 
   
-  本项目可用模型地址：
+  本项目可用模型地址：https://drive.google.com/drive/folders/1xDC8zLuH-a6Ws0l9ERsmX5UB1Ko2xkmf
 
 ### 模型导出ONNX
   由于基于此模型自定义算子较多，一方面需要实现pytorch C++ 拓展算子(lite-transformer已有),另一方面需要实现onnx导出方式，对于未搞过pytorch或ONNX自定义算子，这部分其实耗费了一些精力。详细步骤及导出遇到的问题参见：
