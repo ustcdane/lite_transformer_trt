@@ -57,7 +57,7 @@ nvidia-docker run -it --name trt2022  -p 8231:22  -v /root/workspace/lite_transf
 #### TRT性能测试
 
 确保前面启动环境步骤成功且在trt2022容器内执行，运行如下命令测试模型效果及计算性能：
-- 运行前确保已经有 model [onnx file](https://drive.google.com/drive/folders/1xDC8zLuH-a6Ws0l9ERsmX5UB1Ko2xkmf), 如果没有则下载 拷贝到  lite_transformer_trt/data_model 目录下。运行如下命令测试性能：
+- 运行前确保已经有 model onnx file，若无请下载 [lite.onnx](https://drive.google.com/drive/folders/1xDC8zLuH-a6Ws0l9ERsmX5UB1Ko2xkmf), 如果没有则下载 拷贝到  lite_transformer_trt/data_model 目录下。运行如下命令测试性能：
 
 ```commandline
 cd trt_code
