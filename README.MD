@@ -78,14 +78,14 @@ transformer 模型提出时在NLP界大放异彩，其效果显著，当前在CV
 
   由于lite-transformer是基于老版本fairseq开发，其代码融入到fairseq代码，整体代码缺乏一定可读性[如其主体代码 multibranch 在 fairseq/models/](https://github.com/mit-han-lab/lite-transformer/blob/master/fairseq/models/transformer_multibranch_v2.py)，此外lite-transformer原始模型[不能导出onnx模型](https://github.com/mit-han-lab/lite-transformer/issues/24)，结合以上原因我们对模型进行以下两点改造工作：<br>
   -  采用fairseq自定义plugin方式复现lite-transformer,见代码 train_model/my_lite_plugins
-  -  实现了lite-transformer dynamicconv+self-attn的非回归版本(none-auoregress ) my_lite_plugins/models/liteConv_NAT.py
+  -  实现了lite-transformer dynamicconv+self-attn的非回归版本([non-autoregressive 介绍](https://aclanthology.org/2020.acl-main.15.pdf) ) my_lite_plugins/models/liteConv_NAT.py
 </br>
 
 - 模型训练代码: [train code](https://github.com/ustcdane/lite_transformer_trt/tree/main/train_model)
 
 ## 优化过程
 
-- 模型优化开发：实现了lite-transformer dynamicconv+self-attn的非回归版本(none-auoregress ),详细见说明文档 [train_model/README.md](https://github.com/ustcdane/lite_transformer_trt/tree/main/train_model)
+- 模型优化开发：实现了lite-transformer dynamicconv+self-attn的非回归版本([non-autoregressive 介绍](https://arxiv.org/pdf/1711.02281.pdf) ),详细见说明文档 [train_model/README.md](https://github.com/ustcdane/lite_transformer_trt/tree/main/train_model)
 - 进行onnx模型转换：由于ONNX 没有算子DynamicConv，因此需要实现onnx 自定义算子 以便模型导出为onnx 具体解决方法见：doc/README.md
 - DynamicConv复杂算子plugin实现：包括实现结果精度验证，详细见[DynamicConvPlugin](https://github.com/ustcdane/lite_transformer_trt/tree/main/trt_code/DynamicConvPlugin)
 - 算子融合提升性能：对LayerNorm算子融合，进一步提升性能，详细见[LayerNormPlugin](https://github.com/ustcdane/lite_transformer_trt/tree/main/trt_code/LayerNormPlugin)
@@ -165,4 +165,4 @@ r0: median of relative difference of output 0
 
 ### 经验
 - 当前对于某些训练模型框架转onnx是使用TRT转起来的一大门槛，这块需要相关大厂多多支持模型转onnx解决方案,或者大家积极参与各种训练框架模型转onnx的问题解决方法分享
-- TRT 技术为AI推理提供广阔的施展空间，trt相关技术文档可以提供更多使用样例(如有些难懂的技术只给出API说明，读者可能比较迷糊）让大家参考来写code，降低入门门槛
+- TRT 技术为AI推理提供广阔的施展空间，trt相关技术文档可以提供更多使用样例(如有些难懂的技术只给出API说明，读者可能比较迷糊）让大家参考来写code，这样trt写起来更丝滑
