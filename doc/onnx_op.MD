@@ -27,8 +27,23 @@
 本项目使用 torch.autograd.Function 来解决 扩展算子及 onnx导出符号映射关系。
 Function 类有一个很好的性质：如果它定义了 symbolic 静态方法，该 Function 在执行 torch.onnx.export() 时就可以根据 symbolic 中定义的规则转换成 ONNX 算子。
 
-具体见代码：
+具体见代码：[dynamicconv_layer](https://github.com/ustcdane/lite_transformer_trt/tree/main/train_model/fairseq/modules/dynamicconv_layer)主要关注下dynamicconv_cuda.cpp 记得给torch注册自定义算子torch::RegisterOperators; 其次dynamicconv_layer.py 需要给torch.autograd.Function 类 dynamicconvFunction 增加symbolic函数，便于onnx导出该算子;此外 模型代码里也记得定义下这个[算子](https://github.com/ustcdane/lite_transformer_trt/blob/main/train_model/my_lite_plugins/models/liteConv_NAT.py#L39)。 代码目录如下:
 
+```shell
+dynamicconv_layer
+├── build
+├── cuda_function_gen.py
+├── dist
+├── dynamicconv_cuda_backward.cu
+├── dynamicconv_cuda.cpp
+├── dynamicconv_cuda.cuh
+├── dynamicconv_cuda_forward.cu
+├── dynamicconv_cuda_kernel.cu
+├── dynamicconv_layer.py
+├── dynamiconv_cpu.cpp
+├── __init__.py
+└── setup.py
+```
 
 ## 导出onnx存在的问题
 

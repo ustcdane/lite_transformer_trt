@@ -37,11 +37,11 @@ from torch.onnx import register_custom_op_symbolic
 from torch.onnx.symbolic_helper import parse_args
 @parse_args("v", "v", "i")
 def symbolic_dynamicconv_forward(g, x, weights, padding_l):
-    #args = [x, weights]
-    #kwargs = {"padding_l_i": padding_l}
-    #return g.op("DynamicconvSpace::dynamicconv_forward", *args, **kwargs)
+    args = [x, weights]
+    kwargs = {"padding_l_i": padding_l}
+    return g.op("DynamicconvSpace::dynamicconv_forward", *args, **kwargs)
     #return g.op("DynamicconvSpace::dynamicconv_forward",x, weights, padding_l)
-    return g.op("ai.onnx.contrib::dynamicconv_forward",x, weights, padding_l)
+    #return g.op("ai.onnx.contrib::dynamicconv_forward",x, weights, padding_l)
 # Register contrib  operation as a counterpart for  xx
 register_custom_op_symbolic('DynamicconvSpace::dynamicconv_forward', symbolic_dynamicconv_forward, 11)
 '''
