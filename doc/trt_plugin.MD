@@ -14,3 +14,4 @@
 ```
 
 - node attrs 问题相关验证[代码](https://github.com/ustcdane/lite_transformer_trt/tree/main/plugin_attrs_issue)
+- 解决办法：是AddPlugin examples AddScalarPluginCreator::AddScalarPluginCreator() 缺少代码，具体见: https://github.com/NVIDIA/trt-samples-for-hackathon-cn/issues/38

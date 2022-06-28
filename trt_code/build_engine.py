@@ -181,4 +181,3 @@ with trt.Builder(TRT_LOGGER) as builder, builder.create_network(EXPLICIT_BATCH) 
         with open(engine_name, "wb") as f:
             f.write(engineString)
             print(f"Succeeded saving {engine_name} file!")
-
