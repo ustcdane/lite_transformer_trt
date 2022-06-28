@@ -18,7 +18,7 @@
   本项目可用模型地址：https://drive.google.com/drive/folders/1xDC8zLuH-a6Ws0l9ERsmX5UB1Ko2xkmf
 
 ### 模型导出ONNX
-  由于基于此模型自定义算子较多，一方面需要实现pytorch C++ 拓展算子(lite-transformer已有),另一方面需要实现onnx导出方式，对于未搞过pytorch或ONNX自定义算子，这部分其实耗费了一些精力。详细步骤及导出遇到的问题参见：
+  由于基于此模型自定义算子较多，一方面需要实现pytorch C++ 拓展算子(lite-transformer已有),另一方面需要实现onnx导出方式，对于未搞过pytorch或ONNX自定义算子，这部分其实耗费了一些精力。详细步骤及导出遇到的问题[参见](https://github.com/ustcdane/lite_transformer_trt/blob/main/doc/onnx_op.MD)：
 
 ### 安装nvidia-docker
 
@@ -38,7 +38,7 @@ docker pull registry.cn-hangzhou.aliyuncs.com/trt2022/trt-8.4-ga
 
 启动容器，注意宿主机位置映射改下：
 ```commandline
-nvidia-docker run -it --name trt2022  -p 8231:22  -v /root/workspace/lite_transformer_trt:/target registry.cn-hangzhou.aliyuncs.com/trt2022/trt-8.4-ga
+nvidia-docker run -it --name trt2022  -p 8231:22  -v /root/workspace/lite_transformer_trt:/lite_transformer_trt registry.cn-hangzhou.aliyuncs.com/trt2022/trt-8.4-ga
 ```
 
 在容器内拉取项目需要的模型文件：
@@ -57,6 +57,7 @@ nvidia-docker run -it --name trt2022  -p 8231:22  -v /root/workspace/lite_transf
 #### TRT性能测试
 
 确保前面启动环境步骤成功且在trt2022容器内执行，运行如下命令测试模型效果及计算性能：
+- 运行前确保已经有 model [onnx file](https://drive.google.com/drive/folders/1xDC8zLuH-a6Ws0l9ERsmX5UB1Ko2xkmf), 如果没有则下载 拷贝到  lite_transformer_trt/data_model 目录下。运行如下命令测试性能：
 
 ```commandline
 cd trt_code
