@@ -158,6 +158,10 @@ r0: median of relative difference of output 0
 - 问题：目前由于onnx某些节点问题，目前自动评测性时只给了BS=16 seq=32情形，实际情况其它seq len需要转换onnx时指定seqlen为 8\16等情形（目前看着应该是计算图问题，还未来得及修改）。
 - onnx 自定义算子，实现onnxruntime 相关参考不多，遇到问题还不知道如何解决 本项目实现初步的 ort_test.py 还未完全跑通
 
+## 问题反馈(bug)
+- onnx node attrs 在写plugin时不能有效识别(createPlugin 时PluginFieldCollection 无具体属性信息)，只能通过常量传参的方式给enqueue
+- 相关验证[代码](https://github.com/ustcdane/lite_transformer_trt/tree/main/plugin_attrs_issue)
+
 
 ## 经验与体会
 ### 体会

@@ -3,3 +3,9 @@
 
 - 相关函数：
  IPluginV2* createPlugin(const char* name, const PluginFieldCollection* fc) noexcept override
+
+ - 复现办法
+```commandline 
+ cd plugin_attrs_issue/
+ sh build.sh
+ ```
