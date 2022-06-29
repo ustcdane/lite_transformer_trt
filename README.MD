@@ -50,7 +50,7 @@ nvidia-docker run -it --name trt2022  -p 8231:22  -v /root/workspace/lite_transf
  cd lite_transformer_trt
  ```
 
-执行``download.sh`` 注意这块下载由于网络原因可能不好使,需要手动下载然后拷贝到data_model目录。
+执行``download.sh`` 注意这块下载由于网络原因可能不好使,需要手动下载然后拷贝到data_model目录(data_model目录已有lite.onnx 或者到release下载 onnx.zip 解压然后把lite.onnx放到data_model目录)。
 
 请确保以上是在trt2022容器内执行。
 
